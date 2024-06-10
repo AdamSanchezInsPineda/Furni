@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Old Standard TT';
+    src: url('/fonts/OldStandardTT-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Old Standard TT';
+    font-weight: bold;
+    src: url('/fonts/OldStandardTT-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Old Standard TT';
+    font-style: italic;
+    src: url('/fonts/OldStandardTT-Italic.ttf') format('truetype');
+}
+
+.section {
+    position: relative;
+}
+
+.section:hover h1::after {
+    width: 100%;
+}
+
+.section:hover img {
+    transform: scale(1.05);
+}
+
+.section:hover img {
+    transition: transform .3s ease-in-out;
+}
+
+.section h1 {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.section h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width .3s;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Processing</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0;">
+<div style="background-color: #f8f9fa; padding: 20px;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 200px ; width: 65%;">
+        <div style="background: white; padding: 20px; text-align: center;">
+            <img src="/images/logo.png" alt="Logo" style="width: 200px;"/>
+        </div>
+        <div style="background: white; padding: 5% 20% ; color: #333; font-size: 1.0em;">
+            <div style="font-size: 1.0em;">
+                <h1 style="color: red;">Order Cancelled</h1>
+                <p>Dear {{ $name }},</p>
+                <p style="color: red;">We regret to inform you that your order has been cancelled. If this was a mistake
+                    or if you have any questions, please contact our customer service immediately.</p>
+                <h2>Order Details:</h2>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li>Order Number: {{ $orderNumber }}</li>
+                    <li>Order Date: {{ $orderDate }}</li>
+                    <li>Total Amount: {{ $orderTotal }}</li>
+                </ul>
+            </div>
+            <hr style="border: 1px solid #d6d8db;">
+
+            <div style="font-size: 0.8em;">
+
+                <p>If you have any questions or need further assistance, please don't hesitate to contact us.</p>
+                <p>Thank you for choosing our service!</p>
+                <h2>Customer service</h2>
+                <p>Our customer service team is at your disposal to address any questions or concerns you may have.
+                    Please feel free to contact us:</p>
+                <ul>
+                    <li>
+                        <strong>Phone:</strong> +1 800 123 4567
+                    </li>
+                    <li>
+                        <strong>Email:</strong> office@furnivisual.com
+                    </li>
+                </ul>
+                <p>We sincerely appreciate your trust in FurniVisual. We will strive to exceed your expectations at every
+                    step of the purchasing process.</p>
+                <p>Thank you for choosing us as your trusted provider.</p>
+                <p>Sincerely,</p>
+                <p>Furnivisual Team</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
