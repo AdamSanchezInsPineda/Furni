@@ -32,7 +32,7 @@ class AdminController extends Controller
             $query->where('name', 'like', '%' . $name . '%');
         })->when(request('email'), function ($query, $email) {
             $query->where('email', 'like', '%' . $email . '%');
-        })->paginate(5)->withQueryString();
+        })->paginate(5)->appends(request()->query());
 
         $filters = request()->only(['name', 'email']);
 
@@ -50,7 +50,7 @@ class AdminController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         })->when(request('category'), function ($query, $category) {
             $query->where('category_id', $category);
-        })->paginate(5)->withQueryString();
+        })->paginate(5)->appends(request()->query());
 
         $filters = request()->only(['search', 'category']);
 

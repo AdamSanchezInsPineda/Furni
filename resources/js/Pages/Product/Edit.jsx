@@ -141,7 +141,7 @@ export default function Edit({auth, product, categories}) {
                                 Image:
                             </label>
                             <img
-                                src={`/storage/products/${product.image}`}
+                                src={`../storage/app/public/products/${product.image}`}
                                 alt={"product-" + product.id}
                                 width={200}
                                 height={100}
@@ -169,7 +169,7 @@ export default function Edit({auth, product, categories}) {
                                     product.gallery.map((image, index) => (
                                         <div key={index}>
                                             <img
-                                                src={`/storage/products/${image}`}
+                                                src={`../storage/app/public/products/${image}`}
                                                 alt={"gallery-" + index}
                                                 width={200}
                                                 height={100}
