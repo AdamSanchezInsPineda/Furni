@@ -97,8 +97,7 @@ export default function Show({auth, product, reviews}) {
                     <form onSubmit={submit} className="flex flex-col gap-2 ">
                         <div className="mb-4">
                             <h1 className="font-semibold">
-                                Upload samples:
-                                <span className="text-red-500"> *</span>
+                                Upload samples (Max 5):
                             </h1>
                             <input
                                 type="file"
@@ -112,7 +111,6 @@ export default function Show({auth, product, reviews}) {
                                 file:bg-black file:text-white
                                 hover:file:bg-neutral-800 file:cursor-pointer"
                                 multiple={true}
-                                required
                             />
                             {Object.keys(errors).filter(key => key.startsWith('images.')).map((key, index) => (
                                 <InputError
@@ -252,7 +250,7 @@ export default function Show({auth, product, reviews}) {
                                 onChange={handleOnChange}
                                 rows="10"
                                 className="border-gray-300 rounded-md w-full"
-                                placeholder="Explain your idea of product..."
+                                placeholder="Additional comments"
                             ></TextArea>
                             <InputError
                                 message={errors.information}
@@ -269,57 +267,6 @@ export default function Show({auth, product, reviews}) {
                     </form>
                 </div>
             </section>
-            <section
-                className="lg:px-32 px-8 bg-white py-8 flex lg:flex-row flex-col items-start border-b-4 justify-center">
-                <div className="">
-                    <h2 className="text-2xl font-bold mb-2">Description</h2>
-                    <hr className="mb-4"/>
-                    <p className="text-lg">{product.full_description}</p>
-                    <h2 className="text-2xl font-bold mb-2">Gallery</h2>
-                    <div className="flex flex-wrap">
-                        {product.gallery.map((image, index) => (
-                            <div key={index} className="w-1/2 p-2">
-                                <img
-                                    src={`/storage/products/${image}`}
-                                    alt={`product-${index}`}
-                                    className="rounded-md w-full object-cover cursor-pointer"
-                                    onClick={() =>
-                                        openModal(`/storage/products/${image}`)
-                                    }
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="px-4 md:pt-0 pt-10 w-full">
-                    <h2 className="text-2xl font-bold mb-2">Make a review</h2>
-                    <hr className="mb-4"/>
-                    <ReviewForm
-                        product={product}
-                        user={auth.user}/>
-                </div>
-            </section>
-            {reviews.length > 0 && (
-                <section className="lg:px-32 px-8 bg-white py-8">
-                    <h2 className="text-2xl font-bold mb-2">Reviews</h2>
-                    <hr className="mb-4"/>
-                    {reviews.map((review, index) => (
-                        <div key={index} className="border-b border-gray-300 py-4">
-                            <div className="flex flex-row gap-3">
-                                <img
-                                    src={`/storage/avatars/${review.user.avatar}`}
-                                    alt="User avatar"
-                                    className="object-cover w-10 h-10 rounded-full"
-                                />
-                                <h3 className="text-xl pt-1">{review.user.name}</h3>
-                            </div>
-                            <h3 className="text-gray-600 ">{new Date(review.user.created_at).toLocaleDateString()}</h3>
-                            <Rate initialValue={review.rate} disabled></Rate>
-                            <p className=" text-lg">{review.comment}</p>
-                        </div>
-                    ))}
-                </section>
-            )}
 
             <div className="items-center justify-center text-center border-0">
                 <Modal

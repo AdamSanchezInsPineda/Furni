@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Mail\OrderConfirmation;
+use App\Mail\OrderPayed;
 use App\Mail\OrderProcessing;
 use App\Mail\OrderCompleted;
 use App\Mail\OrderCancelled;
@@ -37,8 +38,7 @@ class OrderController extends Controller
         return Inertia::render('Order/Admin/Show', compact('order'));
     }
 
-    public function view(Order $order)
-    {
+    public function view(Order $order){
         // Only allow authenticated user to view their own order and if the user is not an admin
         if (auth()->id() !== $order->user_id && !auth()->user()->isAdmin()) {
             return redirect()->route('orders.indexUser');
@@ -149,21 +149,35 @@ class OrderController extends Controller
             if (!$session) {
                 throw new NotFoundHttpException;
             }
-            //$customer = $stripe->customers->retrieve($session->customer);
 
             $order = Order::where('session_id', $session->id)->first();
             if (!$order) {
                 throw new NotFoundHttpException();
             }
-            return Inertia::render('CheckOut/CheckoutSuccess', compact('order')); //, compact('customer'));
+
+            // Obtener el usuario relacionado con la orden
+            $user = User::find($order->user_id);
+            $cart = Cart::find($order->cart_id);
+
+            // Enviar el email de confirmación
+            Mail::to($user->email)->send(new OrderPayed($user->name, $order->order_number, $order->created_at, $order->total_price, $cart->products));
+
+            return Inertia::render('CheckOut/CheckoutSuccess', compact('order'));
 
         } catch (\Exception $e) {
+            Log::error('Error in success method: ' . $e->getMessage());
             throw new NotFoundHttpException();
         }
     }
 
-    public function cancel()
-    {
+    public function cancel(Order $order){
+        $order = Order::latest()->first();
+        if (!$order) {
+            throw new NotFoundHttpException();
+        }
+
+        $order->delete();
+
         return Inertia::render('CheckOut/CheckoutCancel');
     }
 

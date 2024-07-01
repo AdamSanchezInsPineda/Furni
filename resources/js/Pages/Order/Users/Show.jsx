@@ -1,19 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import PageLayout from "@/Layouts/PageLayout";
-import {FaCircle} from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 import StepperVertical from "@/Components/StepperVertical";
 import Stepper from "@/Components/Stepper";
+import PrimaryButton from "@/Components/PrimaryButton";
 import ProductViewCard from "@/Components/ProductViewCard";
 import "@/../css/scroll.css";
+import { useForm } from "@inertiajs/inertia-react";
 
-const OrderDetailsPage = ({auth, order}) => {
+const OrderDetailsPage = ({ auth, order }) => {
     const STATUS_MAP = {
         "cancelled": -1,
         "pending": 0,
         "processing": 1,
         "completed": 2
     };
-    const NUMBER_OF_STEPS = 3
+
+    const [images, setImages] = useState([]);
+
+    const { data, setData, put, processing, errors } = useForm({
+        images: [],
+    });
+
+    const handleImagesChange = (event) => {
+        const fileArray = Array.from(event.target.files);
+        setData("images", fileArray);
+        setImages(fileArray);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        images.forEach((image, index) => {
+            formData.append(`images[${index}]`, image);
+        });
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(route("cart.update", order.id), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'X-HTTP-Method-Override': 'PUT'
+            }
+        }).then(response => {
+            if (response.ok) {
+                console.log("Images uploaded successfully.");
+                window.location.reload();
+            } else {
+                console.error("Error uploading images.");
+                window.location.reload();
+            }
+        }).catch(error => {
+            console.error("Error:", error);
+        });
+    };
+
+
+    const NUMBER_OF_STEPS = 3;
     const NAME_OF_STEPS = ["pending", "processing", "completed"];
     const orderStatusColor = {
         unpaid: 'bg-red-200 text-red-800',
@@ -24,6 +70,45 @@ const OrderDetailsPage = ({auth, order}) => {
     };
     const statusColor = orderStatusColor[order.status] || 'bg-gray-200 text-gray-800';
     const currentStep = STATUS_MAP[order.status];
+
+    const img = JSON.parse(order.cart.products[0].pivot.images);
+
+    const imageUpload = img[0] === "placeholder.png" ?
+        <form onSubmit={submit} className='flex items-center'>
+            <input
+                type="file"
+                name="images"
+                id="images"
+                onChange={handleImagesChange}
+                className="block w-full text-sm text-slate-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-black file:text-white
+                                hover:file:bg-neutral-800 file:cursor-pointer"
+                multiple={true}
+            />
+            <PrimaryButton disabled={processing}>
+                Upload
+            </PrimaryButton>
+        </form>
+        :
+        JSON.parse(order.cart.products[0].pivot.images).map(
+            (image, index) => {
+                return (
+                    <div
+                        key={index}
+                        className="relative"
+                    >
+                        <img
+                            src={`/storage/cart/${image}`}
+                            alt=""
+                            className="rounded-md w-28 object-cover"
+                        />
+                    </div>
+                );
+            }
+        );
 
     return (
         <PageLayout
@@ -47,6 +132,9 @@ const OrderDetailsPage = ({auth, order}) => {
                                     minute: '2-digit',
                                     second: '2-digit',
                                 })}</p>
+                            </div>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                                {imageUpload}
                             </div>
                             <p className={`${statusColor} px-2 rounded-full font-bold text-lg`}>
                                 <FaCircle className="inline-block mr-2 mb-1 text-xs"/>

@@ -53,6 +53,12 @@ class DatabaseSeeder extends Seeder
             'image' => 'interiors.webp',
         ]);
 
+        Category::create([
+            'name' => 'Terraces',
+            'description' => 'Discover a stunning collection of terraces designed to elevate your outdoor living experience. From cozy urban retreats to expansive garden sanctuaries, our terraces showcase a blend of style, comfort, and functionality. Explore a variety of designs that cater to every taste and preference, ensuring your terrace becomes a perfect extension of your home.',
+            'image' => 'terraces.jpg',
+        ]);
+
         for ($j = 0; $j < 10; $j++) {
             $num_random = rand(1, 6);
             $product = Product::factory()->create([

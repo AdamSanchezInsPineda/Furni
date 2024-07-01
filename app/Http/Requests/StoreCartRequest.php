@@ -25,7 +25,7 @@ class StoreCartRequest extends FormRequest
     {
         return [
             'product_id' => 'required',
-            'images' => 'required|array|max:5',
+            'images' => 'array|max:5',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20048', // 20MB
             'model' => 'nullable|boolean',
             'deadline' => 'nullable|date',

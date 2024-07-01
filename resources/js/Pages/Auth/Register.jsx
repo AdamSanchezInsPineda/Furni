@@ -12,7 +12,6 @@ export default function Register() {
         name: "",
         last_name: "",
         email: "",
-        website: "",
         phone: "",
         password: "",
         password_confirmation: "",
@@ -76,20 +75,6 @@ export default function Register() {
                         required
                     />
                     <InputError message={errors.last_name} className="mt-2"/>
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="website" value="Website"/>
-                    <TextInput
-                        id="website"
-                        name="website"
-                        value={data.website}
-                        className="mt-1 block w-full"
-                        autoComplete="website"
-                        isFocused={true}
-                        onChange={handleOnChange}
-                    />
-                    <InputError message={errors.website} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">

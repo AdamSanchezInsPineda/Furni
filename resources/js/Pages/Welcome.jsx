@@ -21,11 +21,11 @@ export default function Welcome({ auth }) {
                     muted
                     className="absolute z-0 w-full h-full object-cover"
                 >
-                    <source src="videos/furniVideo.mp4" type="video/mp4" />
+                    <source src="videos/furniVideo.mp4" type="video/mp4"/>
                 </video>
                 <div className="lg:ms-10 flex flex-col gap-4 items-end z-10 backdrop-blur-xl p-4 rounded-xl">
                     <h1 className="md:text-7xl text-5xl text-end">
-                        Welcome to our <br /> innovative <br /> graphic studio
+                        Welcome to our <br/> innovative <br/> graphic studio
                     </h1>
                     <p className="max-w-96 text-end">
                         Nestled in the vibrant heart of Cracow, our studio is a
@@ -42,6 +42,34 @@ export default function Welcome({ auth }) {
                     </Link>
                 </div>
             </section>
+
+            <section className="flex lg:flex-row flex-col m-4">
+                <div className="flex-1 flex flex-col justify-center items-center text-center max-lg:mb-4 gap-4">
+                    <h1 className="lg:text-4xl text-4xl">
+                        Transforming Ideas into Tailored Treasures
+                    </h1>
+                    <br/>
+                    <p className="w-full lg:max-w-[800px]">
+                        At FurniVisual, we're not just creating products; we're
+                        crafting personalized masterpieces tailored to your
+                        dreams. With meticulous attention to detail and a
+                        passion for innovation, we breathe life into every
+                        design, ensuring it reflects your individuality. Whether
+                        it's a custom furniture piece or a bespoke interior
+                        concept, we're here to turn your ideas into tangible
+                        works of art. Let us be your creative partner in
+                        bringing your vision to reality, where every detail is a
+                        reflection of your style and personality.
+                    </p>
+                </div>
+                <div className="flex-1 w-full">
+                    <ReactCompareImage
+                        leftImage="/images/compare1.webp"
+                        rightImage="/images/compare2.jpg"
+                    />
+                </div>
+            </section>
+
             <section className="py-24">
                 <div className="flex flex-col items-center  gap-5">
                     <h1 className="text-4xl text-center max-w-[700px]">
@@ -112,34 +140,8 @@ export default function Welcome({ auth }) {
                 </div>
             </section>
 
-            <hr className="mx-10" />
+            <hr className="mx-10"/>
 
-            <section className="flex lg:flex-row flex-col m-4">
-                <div className="flex-1 flex flex-col justify-center items-center text-center max-lg:mb-4 gap-4">
-                    <h1 className="lg:text-4xl text-4xl">
-                        Transforming Ideas into Tailored Treasures
-                    </h1>
-                    <br />
-                    <p className="w-full lg:max-w-[800px]">
-                        At FurniVisual, we're not just creating products; we're
-                        crafting personalized masterpieces tailored to your
-                        dreams. With meticulous attention to detail and a
-                        passion for innovation, we breathe life into every
-                        design, ensuring it reflects your individuality. Whether
-                        it's a custom furniture piece or a bespoke interior
-                        concept, we're here to turn your ideas into tangible
-                        works of art. Let us be your creative partner in
-                        bringing your vision to reality, where every detail is a
-                        reflection of your style and personality.
-                    </p>
-                </div>
-                <div className="flex-1 w-full">
-                    <ReactCompareImage
-                        leftImage="/images/compare1.webp"
-                        rightImage="/images/compare2.jpg"
-                    />
-                </div>
-            </section>
 
             <Footer></Footer>
         </>

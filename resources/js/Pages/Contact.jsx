@@ -5,17 +5,51 @@ import { MdEmail } from "react-icons/md";
 
 export default function Catalogue({ auth }) {
     const [copied, setCopied] = useState(null);
+
     useEffect(() => {
         if (copied) {
             const timer = setTimeout(() => {
                 setCopied(null);
             }, 3000);
-    
+
             return () => {
                 clearTimeout(timer);
             };
         }
     }, [copied]);
+
+    const fallbackCopyTextToClipboard = (text) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; // Avoid scrolling to bottom
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            setCopied(true);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+        }
+
+        document.body.removeChild(textArea);
+    };
+
+    const handleCopy = async (text, identifier) => {
+        if (!navigator.clipboard) {
+            fallbackCopyTextToClipboard(text);
+            setCopied(identifier);
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(identifier);
+        } catch (error) {
+            console.error("Failed to copy text: ", error);
+            fallbackCopyTextToClipboard(text);
+        }
+    };
 
     return (
         <PageLayout
@@ -26,7 +60,7 @@ export default function Catalogue({ auth }) {
         >
             <section
                 style={{
-                    backgroundImage: "url('/images/categories/Leonardo.jpeg')",
+                    backgroundImage: "url('/storage/categories/Leonardo.jpeg')",
                 }}
                 className="text-white px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64 py-10 bg-center"
             >
@@ -54,16 +88,16 @@ export default function Catalogue({ auth }) {
                             </div>
                             <button
                                 className={`transition-all duration-300 ease-in-out bg-gray-200 hover:bg-gray-300 text-gray-800 px-2 py-1 rounded-md ${
-                                    copied === "write-text" ? "bg-green-200" : ""
+                                    copied === "address" ? "bg-green-200" : ""
                                 }`}
-                                onClick={async () => {
-                                    await navigator.clipboard.writeText(
-                                        "Szybisko 26, 30-698 Kraków"
-                                    );
-                                    setCopied("write-text");
-                                }}
+                                onClick={() =>
+                                    handleCopy(
+                                        "Szybisko 26, 30-698 Kraków",
+                                        "address"
+                                    )
+                                }
                             >
-                                {copied === "write-text" ? "Copied ✅" : "Copy"}
+                                {copied === "address" ? "Copied ✅" : "Copy"}
                             </button>
                         </div>
                         <p className="text-xl font-semibold mt-4">Visit us</p>
@@ -75,24 +109,19 @@ export default function Catalogue({ auth }) {
                                 <FaPhoneVolume className="text-2xl text-white" />
                             </div>
                             <button
-                                 className={`transition-all duration-300 ease-in-out bg-gray-200 hover:bg-gray-300 text-gray-800 px-2 py-1 rounded-md ${
-                                    copied === "write-phone" ? "bg-green-200" : ""
+                                className={`transition-all duration-300 ease-in-out bg-gray-200 hover:bg-gray-300 text-gray-800 px-2 py-1 rounded-md ${
+                                    copied === "phone" ? "bg-green-200" : ""
                                 }`}
-                                onClick={async () => {
-                                    await navigator.clipboard.writeText(
-                                        "+48 123 456 789"
-                                    );
-                                    setCopied("write-phone");
-                                }}
+                                onClick={() =>
+                                    handleCopy("504-999-310", "phone")
+                                }
                             >
-                                {copied === "write-phone"
-                                    ? "Copied ✅"
-                                    : "Copy"}
+                                {copied === "phone" ? "Copied ✅" : "Copy"}
                             </button>
                         </div>
                         <p className="text-xl font-semibold mt-4">Call us</p>
                         <p>Mon-Fri from 9am to 4pm</p>
-                        <p className="mt-2">+48 123 456 789</p>
+                        <p className="mt-2">504-999-310</p>
                     </div>
                     <div className="flex flex-col p-2 bg-white rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center">
@@ -101,23 +130,23 @@ export default function Catalogue({ auth }) {
                             </div>
                             <button
                                 className={`transition-all duration-300 ease-in-out bg-gray-200 hover:bg-gray-300 text-gray-800 px-2 py-1 rounded-md ${
-                                    copied === "write-mail" ? "bg-green-200" : ""
+                                    copied === "email" ? "bg-green-200" : ""
                                 }`}
-                                onClick={async () => {
-                                    await navigator.clipboard.writeText(
-                                        "furnivisual@gmail.com"
-                                    );
-                                    setCopied("write-mail");
-                                }}
+                                onClick={() =>
+                                    handleCopy(
+                                        "office@furnivisual.com",
+                                        "email"
+                                    )
+                                }
                             >
-                                {copied === "write-mail" ? "Copied ✅" : "Copy"}
+                                {copied === "email" ? "Copied ✅" : "Copy"}
                             </button>
                         </div>
                         <p className="text-xl font-semibold mt-4">
                             Chat to sales
                         </p>
                         <p>Speak to our team!</p>
-                        <p className="mt-2">furnivisual@gmail.com</p>
+                        <p className="mt-2">office@furnivisual.com</p>
                     </div>
                 </div>
                 <h2 className="text-4xl font-bold text-center mb-4">

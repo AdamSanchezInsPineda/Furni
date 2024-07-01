@@ -24,10 +24,6 @@ export default function ProductCard({product}) {
                 <p>{product.short_description}</p>
                 <div className="flex justify-between flex-grow items-end">
                     <div className="flex gap-1 items-center">
-                        <p className="bg-yellow-300 font-bold p-1 rounded-lg">
-                            {product.averageRate > 0 ? product.averageRate : '0.0'}
-                        </p>
-                        <Rate totalStars={5} initialValue={product.averageRate} disabled={true}/>
                     </div>
                     <div className="flex items-center justify-between">
                         <p className="text-2xl font-bold">{product.price} €</p>

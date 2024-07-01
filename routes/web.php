@@ -117,6 +117,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/order/{order}', [OrderController::class, 'view'])->name('orders.view');
+    //Route::get('/order/{order}', [OrderController::class, 'edit'])->name('cart.edit');
+    Route::put('/order/{order}', [CartController::class, 'update'])->name('cart.update');
 
     //Checkout
     Route::get('/checkout-form', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');

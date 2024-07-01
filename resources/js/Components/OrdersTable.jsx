@@ -1,6 +1,9 @@
-import {Link} from "@inertiajs/react";
+import { AiOutlineClose } from "react-icons/ai";
+import {Link, router} from "@inertiajs/react";
 import {FaEye} from "react-icons/fa6";
 import {BiSolidEditAlt} from "react-icons/bi";
+import StatusButton from "@/Components/StatusButtons";
+import React from "react";
 
 export default function OrdersTable({auth, orders}) {
     const {is_admin} = auth.user;
@@ -17,6 +20,24 @@ export default function OrdersTable({auth, orders}) {
                 return "text-red-500";
             default:
                 return "text-gray-500";
+        }
+    }
+
+    function deleteButton(order) {
+        if (order.status === "unpaid") {
+            return (
+                <button
+                    onClick={() => {
+                        router.put(route("orders.updateStatus", {
+                            order,
+                            status: "cancelled",
+                        }));
+                    }}
+                    className="text-red-500"
+                >
+                    <AiOutlineClose/>
+                </button>
+            )
         }
     }
 
@@ -84,6 +105,7 @@ export default function OrdersTable({auth, orders}) {
                                                 className="text-xl hover:text-gray-400 transition-colors ease-in-out duration-200"/>
                                         </Link>
                                     )}
+                                    {deleteButton(order)}
                                 </div>
                             </td>
                         </tr>

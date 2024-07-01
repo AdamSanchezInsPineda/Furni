@@ -18,6 +18,8 @@
                     order with FurniVisual. Your transaction has been successfully processed, and we are committed to
                     providing you with an exceptional shopping experience.</p>
                 <br>
+                <p>Our specialists will contact you regarding the details of the order.</p>
+                <br>
                 <h2>Order Details:</h2>
                 <ul>
                     <li>Order Number: {{ $orderNumber }}</li>

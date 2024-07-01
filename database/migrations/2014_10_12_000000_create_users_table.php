@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->string('website')->nullable();
             $table->integer('phone');
             $table->string('email')->unique();
             $table->boolean('is_admin')->default(false);
@@ -33,7 +32,6 @@ return new class extends Migration {
         User::create([
             'name' => 'Admin',
             'last_name' => 'Admin',
-            'website' => 'example.com',
             'phone' => 123456789,
             'email' => 'admin@example.org',
             'is_admin' => true,
@@ -44,7 +42,6 @@ return new class extends Migration {
         User::create([
             'name' => 'User',
             'last_name' => 'User',
-            'website' => 'example.com',
             'phone' => 123456788,
             'email' => 'user@example.org',
             'email_verified_at' => now(),
@@ -54,7 +51,6 @@ return new class extends Migration {
         User::create([
             'name' => 'Customer',
             'last_name' => 'Customer',
-            'website' => 'example.com',
             'phone' => 123456787,
             'email' => 'customer@example.org',
             'email_verified_at' => now(),

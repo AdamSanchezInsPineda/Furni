@@ -35,7 +35,6 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:' . User::class,
-            'website' => 'nullable|string|max:20',
             'phone' => 'required|integer|min:9|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'is_accepted' => 'accepted'
@@ -51,7 +50,6 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'website' => $request->website,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
@@ -69,6 +67,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }
