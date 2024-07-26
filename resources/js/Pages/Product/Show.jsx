@@ -1,21 +1,24 @@
 import QuantitySelector from "@/Components/QuantitySelector";
 import InputError from "@/Components/InputError";
 import PageLayout from "@/Layouts/PageLayout";
-import ReviewForm from "@/Components/ReviewForm";
-import Rate from "@/Components/Rate";
-import {useEffect, useState} from "react";
-import {IoCalendarOutline, IoInformationCircleOutline} from "react-icons/io5";
+import { useEffect, useState } from "react";
+import { IoCalendarOutline, IoInformationCircleOutline } from "react-icons/io5";
 import TextArea from "@/Components/TextArea";
 import TextInput from "@/Components/TextInput";
-import {useForm} from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import Modal from "react-modal";
-import {Carousel} from "react-responsive-carousel";
+import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Viewer from 'react-viewer';
 
-export default function Show({auth, product, reviews}) {
+export default function Show({ auth, product, reviews }) {
     const [hasModel, setHasModel] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [viewerVisible, setViewerVisible] = useState(false);
+    const [viewerIndex, setViewerIndex] = useState(0);
 
-    const {data, setData, post, processing, errors} = useForm({
+    const { data, setData, post, errors } = useForm({
         product_id: product.id,
         images: [],
         products_number: 1,
@@ -33,7 +36,6 @@ export default function Show({auth, product, reviews}) {
         setData("images", Array.from(event.target.files));
     };
 
-    //Para cuando el usuario cambie el valor del modelo
     useEffect(() => {
         const updateModel = async () => {
             await setData("model", hasModel);
@@ -41,16 +43,13 @@ export default function Show({auth, product, reviews}) {
         updateModel();
     }, [hasModel]);
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const openModal = (image) => {
-        setSelectedImage(image);
-        setModalIsOpen(true);
+    const openViewer = (index) => {
+        setViewerIndex(index);
+        setViewerVisible(true);
     };
 
-    const closeModal = () => {
-        setModalIsOpen(false);
+    const closeViewer = () => {
+        setViewerVisible(false);
     };
 
     const submit = (e) => {
@@ -69,20 +68,9 @@ export default function Show({auth, product, reviews}) {
                         showIndicators={false}
                         swipeable={true}
                     >
-                        <div>
-                            <img
-                                src={`/storage/products/${product.image}`}
-                                alt={`product-${product.name}`}
-                                className="rounded-md"
-                            />
-                        </div>
-                        {product.gallery.map((image, index) => (
-                            <div key={index}>
-                                <img
-                                    src={`/storage/products/${image}`}
-                                    alt={`product-${index}`}
-                                    className="rounded-md"
-                                />
+                        {[product.image, ...product.gallery].map((image, index) => (
+                            <div key={index} onClick={() => openViewer(index)}>
+                                <img src={`/storage/products/${image}`} alt={product.name} />
                             </div>
                         ))}
                     </Carousel>
@@ -187,19 +175,19 @@ export default function Show({auth, product, reviews}) {
                                 <input
                                     type="radio"
                                     name="radio"
-                                    id=""
-                                    value={false}
-                                    onChange={() => setHasModel(true)}
+                                    id="model_yes"
+                                    checked={!hasModel}
+                                    onChange={() => setHasModel(false)}
                                 />
-                                yes
+                                <label htmlFor="model_yes">Yes</label>
                                 <input
                                     type="radio"
                                     name="radio"
-                                    id=""
-                                    value={true}
-                                    onChange={() => setHasModel(false)}
+                                    id="model_no"
+                                    checked={hasModel}
+                                    onChange={() => setHasModel(true)}
                                 />
-                                no
+                                <label htmlFor="model_no">No</label>
                             </div>
                             <InputError
                                 message={errors.model}
@@ -260,28 +248,38 @@ export default function Show({auth, product, reviews}) {
                         <p>Category: {product.category.name}</p>
                         <div className="flex justify-center">
                             <button
-                                className="bg-black font-bold flex items-center gap-2 text-white px-8 py-2 rounded-xl text-center">
-                                Add to cart
+                                type="submit"
+                                className="bg-black font-bold flex items-center gap-2 text-white px-8 py-2 rounded-xl text-center"
+                                disabled={processing}
+                            >
+                                {processing ? "Adding..." : "Add to cart"}
                             </button>
                         </div>
                     </form>
                 </div>
             </section>
 
-            <div className="items-center justify-center text-center border-0">
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={closeModal}
-                    contentLabel="Example Modal"
-                    className="h-screen w-1/2 flex items-center justify-center mx-auto border-0"
-                >
+            <Viewer
+                visible={viewerVisible}
+                onClose={closeViewer}
+                images={[product.image, ...product.gallery].map(image => ({ src: `/storage/products/${image}`, alt: product.name }))}
+                activeIndex={viewerIndex}
+            />
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+                contentLabel="Image Modal"
+                className="h-screen w-1/2 flex items-center justify-center mx-auto border-0"
+            >
+                {selectedImage && (
                     <img
                         src={selectedImage}
                         alt="Selected"
                         className="w-full h-auto"
                     />
-                </Modal>
-            </div>
+                )}
+            </Modal>
         </PageLayout>
     );
 }

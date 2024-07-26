@@ -6,7 +6,7 @@ export default function Catalogue({auth, products}) {
     return (
         <PageLayout user={auth.user} headTitle={"Category Product"} cartAmount={auth.cartAmount}
                     className="bg-slate-100">
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-10 lg:mx-32 mx-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4 py-10 lg:mx-32 mx-8">
                 {products.data.map((product, index) => (
                     <ProductCard key={index} product={product}/>
                 ))}

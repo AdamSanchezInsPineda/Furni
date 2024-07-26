@@ -1,12 +1,24 @@
-export default function ProductViewCard({product}) {
+import { useState } from 'react';
+import Viewer from 'react-viewer';
+
+export default function ProductViewCard({ product }) {
+    const [visible, setVisible] = useState(false);
+
+    const imgPreview = () => {
+        setVisible(true);
+    };
+
+    const closePreview = () => {
+        setVisible(false);
+    };
+
     return (
-        <div
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-white rounded-lg border border-gray-200">
-            <div className="w-full sm:w-48">
+        <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-white rounded-lg border border-gray-200">
+            <div className="relative w-full sm:w-48" onClick={imgPreview}>
                 <img
                     src={`/storage/products/${product.image}`}
-                    alt=""
-                    className="rounded-md h-full w-full"
+                    alt={product.name}
+                    className="rounded-md h-full w-full cursor-pointer"
                 />
             </div>
             <div className="flex-1">
@@ -31,6 +43,11 @@ export default function ProductViewCard({product}) {
                     </h1>
                 )}
             </div>
+            <Viewer
+                visible={visible}
+                onClose={closePreview}
+                images={[{ src: `/storage/products/${product.image}`, alt: product.name }]}
+            />
         </div>
     );
 }

@@ -7,12 +7,11 @@ import {
     IoClose,
     IoPerson,
 } from "react-icons/io5";
-
 import NavLink from "./NavLink";
 import Dropdown from "./Dropdown";
 import {useState} from "react";
 import {Link} from "@inertiajs/react";
-
+import LanguageSelector from "./LanguageSelector";
 const navlinks = [
     {
         icon: <IoHome className="text-4xl"/>,
@@ -30,7 +29,6 @@ const navlinks = [
         href: "about",
     },
 ];
-
 const navlinksResponsive = [
     {
         text: "Profile",
@@ -203,7 +201,6 @@ const Header = ({user, cartAmount}) => {
                                                 )}
                                             </span>
                                         </Dropdown.Trigger>
-
                                         <Dropdown.Content>
                                             {user && user.is_admin === 1 && (
                                                 <Dropdown.Link
@@ -248,6 +245,9 @@ const Header = ({user, cartAmount}) => {
                                     </Link>
                                 </li>
                             )}
+                            <li>
+                                <LanguageSelector/>
+                            </li>
                             <li className="relative">
                                 <NavLink
                                     icon={
@@ -273,5 +273,4 @@ const Header = ({user, cartAmount}) => {
         </>
     );
 };
-
 export default Header;
